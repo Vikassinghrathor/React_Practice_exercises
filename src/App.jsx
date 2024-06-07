@@ -1,82 +1,58 @@
-import { useState } from "react";
+import { useReducer, useState } from 'react';
 import './index.css';
 
-const App = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [addInput, setAddInput] = useState([]);
-  const [isEditing, setIsEditing] = useState(null);
-  const [editValue, setEditValue] = useState("");
+// Define initial state
+const initialState = [];
 
-  function handleInput(e) {
-    setInputValue(e.target.value);
+// Define reducer function
+function reducer(state, action) {
+  switch (action.type) {
+    case 'add':
+      return [...state, { id: Date.now(), text: action.text, completed: false }];
+    case 'toggle':
+      return state.map(todo =>
+        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
+      );
+    case 'remove':
+      return state.filter(todo => todo.id !== action.id);
+    default:
+      throw new Error();
   }
+}
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (inputValue.trim()) {
-      setAddInput([...addInput, inputValue]);
-      setInputValue("");
-    }
-  }
+function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [text, setText] = useState('');
 
-  function handleDelete(index) {
-    setAddInput(addInput.filter((_, i) => i !== index));
-  }
-
-  function handleRemoveAll() {
-    setAddInput([]);
-  }
-
-  function handleEdit(index) {
-    setIsEditing(index);
-    setEditValue(addInput[index]);
-  }
-
-  function handleSave(index) {
-    const updatedTasks = [...addInput];
-    updatedTasks[index] = editValue;
-    setAddInput(updatedTasks);
-    setIsEditing(null);
-    setEditValue("");
-  }
+  const handleAddTodo = () => {
+    dispatch({ type: 'add', text });
+    setText('');
+  };
 
   return (
-    <>
+    <div className="App">
       <h1>Todo App</h1>
-      <div className="todo-container">
+      <div>
         <input
           type="text"
-          placeholder="Enter today's task"
-          value={inputValue}
-          onChange={handleInput}
+          value={text}
+          onChange={e => setText(e.target.value)}
         />
-        <button type="submit" onClick={handleSubmit}>Add Task</button>
-        <ul>
-          {addInput.map((task, index) => (
-            <div key={index} className="task-item">
-              {isEditing === index ? (
-                <>
-                  <input
-                    type="text"
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                  />
-                  <button onClick={() => handleSave(index)}>Save</button>
-                </>
-              ) : (
-                <>
-                  <li>{task}</li>
-                  <button onClick={() => handleEdit(index)}>Edit Task</button>
-                  <button onClick={() => handleDelete(index)}>Delete Task</button>
-                </>
-              )}
-            </div>
-          ))}
-        </ul>
-        <button onClick={handleRemoveAll}>Remove All Tasks</button>
+        <button onClick={handleAddTodo}>Add Todo</button>
       </div>
-    </>
+      <ul>
+        {state.map(todo => (
+          <li key={todo.id} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+            {todo.text}
+            <button onClick={() => dispatch({ type: 'toggle', id: todo.id })}>
+              {todo.completed ? 'Undo' : 'Complete'}
+            </button>
+            <button onClick={() => dispatch({ type: 'remove', id: todo.id })}>Remove</button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-};
+}
 
 export default App;
