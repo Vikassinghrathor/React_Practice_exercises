@@ -1,57 +1,43 @@
-import { useReducer, useState } from 'react';
-import './index.css';
+import { createContext, useContext, useState } from 'react';
 
-// Define initial state
-const initialState = [];
+const ThemeContext = createContext();
 
-// Define reducer function
-function reducer(state, action) {
-  switch (action.type) {
-    case 'add':
-      return [...state, { id: Date.now(), text: action.text, completed: false }];
-    case 'toggle':
-      return state.map(todo =>
-        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-      );
-    case 'remove':
-      return state.filter(todo => todo.id !== action.id);
-    default:
-      throw new Error();
-  }
-}
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
 
-function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [text, setText] = useState('');
-
-  const handleAddTodo = () => {
-    dispatch({ type: 'add', text });
-    setText('');
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
-    <div className="App">
-      <h1>Todo App</h1>
-      <div>
-        <input
-          type="text"
-          value={text}
-          onChange={e => setText(e.target.value)}
-        />
-        <button onClick={handleAddTodo}>Add Todo</button>
-      </div>
-      <ul>
-        {state.map(todo => (
-          <li key={todo.id} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-            {todo.text}
-            <button onClick={() => dispatch({ type: 'toggle', id: todo.id })}>
-              {todo.completed ? 'Undo' : 'Complete'}
-            </button>
-            <button onClick={() => dispatch({ type: 'remove', id: todo.id })}>Remove</button>
-          </li>
-        ))}
-      </ul>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+function ThemedComponent() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const style = {
+    backgroundColor: theme === 'light' ? '#fff' : '#333',
+    color: theme === 'light' ? '#000' : '#fff',
+    padding: '20px',
+    textAlign: 'center',
+  };
+
+  return (
+    <div style={style}>
+      <p>The current theme is {theme}</p>
+      <button onClick={toggleTheme}>Toggle Theme</button>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <ThemedComponent />
+    </ThemeProvider>
   );
 }
 
