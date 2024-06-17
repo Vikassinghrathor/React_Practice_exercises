@@ -1,19 +1,41 @@
-body{
-   box-sizing: border-box;
-   margin: 0px;
-   padding: 0px;
-}
+/* WeatherDashboard.css */
 
-.Header{
-   display: flex;
-   flex-direction: row;
-   justify-content: center;
-   align-items: center;
-   padding: 10px;
-   background-color: #646cff;
-   margin: 0px;
+body {
+   font-family: Arial, sans-serif;
+   background-color: #f0f0f0;
+   color: #333;
+   margin: 0;
+   padding: 0;
+ }
+ 
+ input, button {
+   padding: 8px;
+   margin: 5px;
+ }
+ 
+ 
+ h2, h3 {
+   color: #007BFF;
+ }
+ 
+ ul {
+   list-style-type: none;
+   padding: 0;
+ }
+ 
+ ul li {
+   margin: 5px 0;
+ }
+ 
+ button {
+   background-color: #007BFF;
    color: white;
-   font-family: 'Times New Roman', Times, serif;
-   font-size: 20px;
-   font-weight: 400px;
-}
+   border: none;
+   cursor: pointer;
+   border-radius: 4px;
+ }
+ 
+ button:hover {
+   background-color: #0056b3;
+ }
+ 
