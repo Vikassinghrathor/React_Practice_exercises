@@ -1,14 +1,11 @@
-import WeatherDashboard from "./components/WeatherDashboard";
-import Navbar from "./components/Navbar";
-import './App.css';
+import FormComponent from './components/ReduxCounter';
 
 const App = () => {
   return (
-    <div className="app">
-      <Navbar />
-      <WeatherDashboard />
+    <div>
+      <FormComponent />
     </div>
-  )
-}
+  );
+};
 
 export default App;
