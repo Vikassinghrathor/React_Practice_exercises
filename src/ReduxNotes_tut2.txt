@@ -35,3 +35,36 @@ The only way to change the state is to emit an action, an object describing what
 
 Changes are made with pure functions
 To specify how the state tree is transformed by actions, you write pure reducers. A reducer is a central place where state modification takes place. Reducer is a function which takes state and action as arguments, and returns a newly updated state.
+
+Redux has a single store which holds the application state. If you want to split your code on the basis of data handling logic, you should start splitting your reducers instead of stores in Redux.
+
+An action is dispatched when a user interacts with the application.
+
+The root reducer function is called with the current state and the dispatched action. The root reducer may divide the task among smaller reducer functions, which ultimately returns a new state.
+
+The store notifies the view by executing their callback functions.
+
+The view can retrieve updated state and re-render again.
+
+A pure function is a function  which -:
+
+1. Given the same input , always returns the same output .
+
+2. produces no side effects .
+3 . what are side effects -: 
+
+i) Making HTTP requests .
+ii) Mutating data .
+iii) printing to screen and console .
+iv) DOM Manupulation / Query .
+v) Math.random() .
+
+a = 20;
+
+const result = function SomeOutput(b){
+    return a + b ;
+}
+
+console.log(SomeOutput(2));
+
+This example is not a pure function because it uses global variables to produce result which makes it unpredictable behavior  . Pure function always expect expected output like 2*2 = 4 .
