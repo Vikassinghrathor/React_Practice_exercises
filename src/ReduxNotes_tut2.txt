@@ -22,3 +22,16 @@ ShopKeeper                   Reducer          Ties the store and actions togethe
 1. A store that holds the state of your application .
 2. An action that describes what happened in the application .
 3. A reducer which handles the action and decides how to updates the state .
+
+
+Principles of Redux
+Predictability of Redux is determined by three most important principles as given below −
+
+Single Source of Truth
+The state of your whole application is stored in an object tree within a single store. As whole application state is stored in a single tree, it makes debugging easy, and development faster.
+
+State is Read-only
+The only way to change the state is to emit an action, an object describing what happened. This means nobody can directly change the state of your application.
+
+Changes are made with pure functions
+To specify how the state tree is transformed by actions, you write pure reducers. A reducer is a central place where state modification takes place. Reducer is a function which takes state and action as arguments, and returns a newly updated state.
